@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Black Lives Matter - Data Exploration using Police Shootings Data - Srujan Sharma's Blog</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="/my-first-blog-post.html">
+
+        <meta name="author" content="Srujan Sharma" />
+        <meta name="keywords" content="python,BLM,police shootings" />
+        <meta name="description" content="Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 import pandas as pd import numpy as np import seaborn as sns import os from sklearn import linear_model, metrics import matplotlib import matplotlib.pyplot as plt from collections import Counter os.chdir(&#39;/Users/shikharsharma/Downloads …" />
+
+        <meta property="og:site_name" content="Srujan Sharma's Blog" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Black Lives Matter - Data Exploration using Police Shootings Data"/>
+        <meta property="og:url" content="/my-first-blog-post.html"/>
+        <meta property="og:description" content="Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 import pandas as pd import numpy as np import seaborn as sns import os from sklearn import linear_model, metrics import matplotlib import matplotlib.pyplot as plt from collections import Counter os.chdir(&#39;/Users/shikharsharma/Downloads …"/>
+        <meta property="article:published_time" content="2020-06-19" />
+            <meta property="article:section" content="blogging" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:tag" content="BLM" />
+            <meta property="article:tag" content="police shootings" />
+            <meta property="article:author" content="Srujan Sharma" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.flatly.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Srujan Sharma's Blog ATOM Feed"/>
+
+        <link href="/feeds/blogging.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Srujan Sharma's Blog blogging ATOM Feed"/>
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Srujan Sharma's Blog            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="/category/blogging.html">Blogging</a>
+                        </li>
+                        <li >
+                            <a href="/category/posts.html">Posts</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<!-- Banner -->
+<!-- End Banner -->
+
+<!-- Content Container -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/my-first-blog-post.html"
+                       rel="bookmark"
+                       title="Permalink to Black Lives Matter - Data Exploration using Police Shootings Data">
+                        Black Lives Matter - Data Exploration using Police Shootings Data
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2020-06-19T09:00:00-07:00"> Fri 19 June 2020</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/python.html">python</a>
+        /
+	<a href="/tag/blm.html">BLM</a>
+        /
+	<a href="/tag/police-shootings.html">police shootings</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">metrics</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;/Users/shikharsharma/Downloads/Python_Projects/Datasets/US_shootings_data&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Getting police killings data from https://mappingpoliceviolence.org/</span>
+<span class="n">mpv_police_dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;MPVDatasetDownload.xlsx&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#visualize the data from 2013 - 2020 for all police shootings</span>
+<span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">victim_name</span><span class="w">                     </span><span class="k">object</span><span class="w"></span>
+<span class="n">victim_age</span><span class="w">                      </span><span class="k">object</span><span class="w"></span>
+<span class="n">victim_gender</span><span class="w">                   </span><span class="k">object</span><span class="w"></span>
+<span class="n">victim_race</span><span class="w">                     </span><span class="k">object</span><span class="w"></span>
+<span class="n">url_vitcim_image</span><span class="w">                </span><span class="k">object</span><span class="w"></span>
+<span class="n">date_of_incident</span><span class="w">        </span><span class="n">datetime64</span><span class="o">[</span><span class="n">ns</span><span class="o">]</span><span class="w"></span>
+<span class="n">incident_address</span><span class="w">                </span><span class="k">object</span><span class="w"></span>
+<span class="n">city</span><span class="w">                            </span><span class="k">object</span><span class="w"></span>
+<span class="k">state</span><span class="w">                           </span><span class="k">object</span><span class="w"></span>
+<span class="n">zip</span><span class="w">                            </span><span class="n">float64</span><span class="w"></span>
+<span class="n">county</span><span class="w">                          </span><span class="k">object</span><span class="w"></span>
+<span class="n">death_agency</span><span class="w">                    </span><span class="k">object</span><span class="w"></span>
+<span class="n">cause_of_death</span><span class="w">                  </span><span class="k">object</span><span class="w"></span>
+<span class="n">brief_description</span><span class="w">               </span><span class="k">object</span><span class="w"></span>
+<span class="n">official_disposition</span><span class="w">            </span><span class="k">object</span><span class="w"></span>
+<span class="n">criminal_charge</span><span class="w">                 </span><span class="k">object</span><span class="w"></span>
+<span class="n">news_link</span><span class="w">                       </span><span class="k">object</span><span class="w"></span>
+<span class="n">mental_illness</span><span class="w">                  </span><span class="k">object</span><span class="w"></span>
+<span class="n">unarmed</span><span class="w">                         </span><span class="k">object</span><span class="w"></span>
+<span class="n">alleged_weapon</span><span class="w">                  </span><span class="k">object</span><span class="w"></span>
+<span class="n">alleged_threat_level</span><span class="w">            </span><span class="k">object</span><span class="w"></span>
+<span class="n">fleeing</span><span class="w">                         </span><span class="k">object</span><span class="w"></span>
+<span class="n">body_cam</span><span class="w">                        </span><span class="k">object</span><span class="w"></span>
+<span class="n">wapo_id</span><span class="w">                        </span><span class="n">float64</span><span class="w"></span>
+<span class="n">off_duty_killing</span><span class="w">                </span><span class="k">object</span><span class="w"></span>
+<span class="n">geography</span><span class="w">                       </span><span class="k">object</span><span class="w"></span>
+<span class="n">id</span><span class="w">                               </span><span class="n">int64</span><span class="w"></span>
+<span class="nl">dtype</span><span class="p">:</span><span class="w"> </span><span class="k">object</span><span class="w"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>victim_name</th>
+      <th>victim_age</th>
+      <th>victim_gender</th>
+      <th>victim_race</th>
+      <th>url_vitcim_image</th>
+      <th>date_of_incident</th>
+      <th>incident_address</th>
+      <th>city</th>
+      <th>state</th>
+      <th>zip</th>
+      <th>...</th>
+      <th>mental_illness</th>
+      <th>unarmed</th>
+      <th>alleged_weapon</th>
+      <th>alleged_threat_level</th>
+      <th>fleeing</th>
+      <th>body_cam</th>
+      <th>wapo_id</th>
+      <th>off_duty_killing</th>
+      <th>geography</th>
+      <th>id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Eric M. Tellez</td>
+      <td>28</td>
+      <td>Male</td>
+      <td>White</td>
+      <td>https://fatalencounters.org/wp-content/uploads...</td>
+      <td>2019-12-31</td>
+      <td>Broad St.</td>
+      <td>Globe</td>
+      <td>AZ</td>
+      <td>85501.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>knife</td>
+      <td>other</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5332.0</td>
+      <td>NaN</td>
+      <td>Rural</td>
+      <td>7664</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Name withheld by police</td>
+      <td>NaN</td>
+      <td>Male</td>
+      <td>Unknown race</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>7239-7411 I-40</td>
+      <td>Memphis</td>
+      <td>AR</td>
+      <td>38103.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Unclear</td>
+      <td>unclear</td>
+      <td>other</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7665</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Terry Hudson</td>
+      <td>57</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>3600 N 24th St</td>
+      <td>Omaha</td>
+      <td>NE</td>
+      <td>68110.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>gun</td>
+      <td>attack</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5359.0</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7661</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Malik Williams</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>30800 14th Avenue South</td>
+      <td>Federal Way</td>
+      <td>WA</td>
+      <td>98003.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>gun</td>
+      <td>attack</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5358.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7662</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Frederick Perkins</td>
+      <td>37</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>17057 N Outer 40 Rd</td>
+      <td>Chesterfield</td>
+      <td>MO</td>
+      <td>63005.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Vehicle</td>
+      <td>vehicle</td>
+      <td>attack</td>
+      <td>car</td>
+      <td>no</td>
+      <td>5333.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7667</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div>
+
+<div class="highlight"><pre><span></span><span class="c1">#creating a master sheet and going column by column to visualize the data and see if it needs to be cleaned</span>
+<span class="n">master_sheet</span> <span class="o">=</span> <span class="n">mpv_police_dataset</span><span class="p">[[</span><span class="s1">&#39;victim_name&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_age&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_gender&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;date_of_incident&#39;</span><span class="p">,</span> <span class="s1">&#39;incident_address&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;county&#39;</span><span class="p">,</span> <span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;cause_of_death&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;brief_description&#39;</span><span class="p">,</span> <span class="s1">&#39;official_disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;criminal_charge&#39;</span><span class="p">,</span><span class="s1">&#39;news_link&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;unarmed&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;alleged_threat_level&#39;</span><span class="p">,</span> <span class="s1">&#39;fleeing&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">,</span> <span class="s1">&#39;wapo_id&#39;</span><span class="p">,</span><span class="s1">&#39;off_duty_killing&#39;</span><span class="p">,</span> <span class="s1">&#39;geography&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]]</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Index([&#39;victim_name&#39;, &#39;victim_age&#39;, &#39;victim_gender&#39;, &#39;victim_race&#39;,</span>
+<span class="err">       &#39;date_of_incident&#39;, &#39;incident_address&#39;, &#39;city&#39;, &#39;state&#39;, &#39;zip&#39;,</span>
+<span class="err">       &#39;county&#39;, &#39;death_agency&#39;, &#39;cause_of_death&#39;, &#39;brief_description&#39;,</span>
+<span class="err">       &#39;official_disposition&#39;, &#39;criminal_charge&#39;, &#39;news_link&#39;,</span>
+<span class="err">       &#39;mental_illness&#39;, &#39;unarmed&#39;, &#39;alleged_weapon&#39;, &#39;alleged_threat_level&#39;,</span>
+<span class="err">       &#39;fleeing&#39;, &#39;body_cam&#39;, &#39;wapo_id&#39;, &#39;off_duty_killing&#39;, &#39;geography&#39;,</span>
+<span class="err">       &#39;id&#39;],</span>
+<span class="err">      dtype=&#39;object&#39;)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_name</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Name withheld by police    210</span>
+<span class="err">Michael Brown                3</span>
+<span class="err">Robert Edwards               3</span>
+<span class="err">Jason Whittle                2</span>
+<span class="err">Darius Smith                 2</span>
+<span class="err">                          ... </span>
+<span class="err">Clifton Armstrong            1</span>
+<span class="err">Jason Erling Hallstrom       1</span>
+<span class="err">Daniel Navarro               1</span>
+<span class="err">Crystaline Barnes            1</span>
+<span class="err">Ashanti Pinkney              1</span>
+<span class="c">Name: victim_name, Length: 7411, dtype: int64</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#looking at the most common names of people killed. </span>
+<span class="n">separate</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_name</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_name</span> <span class="o">!=</span> <span class="s1">&#39;Name withheld by police&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+<span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">separate</span><span class="p">)</span>      <span class="c1">#a=name b=surname             </span>
+<span class="n">name_list</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>                         
+<span class="n">name_count</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">name_list</span><span class="p">)</span>         
+<span class="n">most_common_names</span> <span class="o">=</span> <span class="n">name_count</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>  
+<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">most_common_names</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="c1"># </span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Name / Surname of killed people&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Top 15 Name or Surname of killed people&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Top 15 Name or Surname of killed people&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_9_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#Looking with victim_race - visualizing distribution based on race &amp; seeing if the data needs to be cleaned up. </span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">White               3378</span>
+<span class="err">Black               1944</span>
+<span class="err">Hispanic            1335</span>
+<span class="err">Unknown race         670</span>
+<span class="err">Asian                118</span>
+<span class="err">Native American      112</span>
+<span class="err">Unknown Race          64</span>
+<span class="err">Pacific Islander      42</span>
+<span class="c">Name: victim_race, dtype: int64</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#cleaning up the unknown race data</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown Race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Pacific Islander&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">shikharsharma</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pandas</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">indexing</span><span class="p">.</span><span class="nl">py</span><span class="p">:</span><span class="mi">965</span><span class="err">:</span><span class="w"> </span><span class="nl">SettingWithCopyWarning</span><span class="p">:</span><span class="w"> </span>
+<span class="n">A</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">trying</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">copy</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">slice</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">.</span><span class="w"></span>
+<span class="k">Try</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="p">.</span><span class="n">loc</span><span class="o">[</span><span class="n">row_indexer,col_indexer</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
+
+<span class="n">See</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">caveats</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nl">documentation</span><span class="p">:</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">pandas</span><span class="p">.</span><span class="n">pydata</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">pandas</span><span class="o">-</span><span class="n">docs</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_guide</span><span class="o">/</span><span class="n">indexing</span><span class="p">.</span><span class="n">html#returning</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="k">view</span><span class="o">-</span><span class="n">versus</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">copy</span><span class="w"></span>
+<span class="w">  </span><span class="n">self</span><span class="p">.</span><span class="n">obj</span><span class="o">[</span><span class="n">item</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"></span>
+
+
+
+
+
+<span class="n">White</span><span class="w">              </span><span class="mi">3378</span><span class="w"></span>
+<span class="n">Black</span><span class="w">              </span><span class="mi">1944</span><span class="w"></span>
+<span class="n">Hispanic</span><span class="w">           </span><span class="mi">1335</span><span class="w"></span>
+<span class="k">Unknown</span><span class="w">             </span><span class="mi">776</span><span class="w"></span>
+<span class="n">Asian</span><span class="w">               </span><span class="mi">118</span><span class="w"></span>
+<span class="n">Native</span><span class="w"> </span><span class="n">American</span><span class="w">     </span><span class="mi">112</span><span class="w"></span>
+<span class="nl">Name</span><span class="p">:</span><span class="w"> </span><span class="n">victim_race</span><span class="p">,</span><span class="w"> </span><span class="nl">dtype</span><span class="p">:</span><span class="w"> </span><span class="n">int64</span><span class="w"></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Cleaning up the victim age data</span>
+<span class="n">master_sheet</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;40s&#39;</span><span class="p">)]</span> 
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Dealing with missing AGE values. Set them to mean of all ages. </span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#looking at the incident date and dividing it into year, month and month-year combo</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">])</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#adding the total population by race for US: from https://en.wikipedia.org/wiki/Demography_of_the_United_States</span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Asian&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;White&quot;</span><span class="p">,</span> 
+              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Hispanic&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Black&quot;</span><span class="p">,</span>
+              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Native American&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Unknown&quot;</span><span class="p">]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14674252</span><span class="p">,</span> <span class="mi">223553265</span><span class="p">,</span> <span class="mi">50477594</span><span class="p">,</span> <span class="mi">38929319</span><span class="p">,</span> <span class="mi">2932248</span><span class="p">,</span> <span class="mi">22579629</span><span class="p">]</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;total_population&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;zero&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>victim_name</th>
+      <th>victim_age</th>
+      <th>victim_gender</th>
+      <th>victim_race</th>
+      <th>date_of_incident</th>
+      <th>incident_address</th>
+      <th>city</th>
+      <th>state</th>
+      <th>zip</th>
+      <th>county</th>
+      <th>...</th>
+      <th>fleeing</th>
+      <th>body_cam</th>
+      <th>wapo_id</th>
+      <th>off_duty_killing</th>
+      <th>geography</th>
+      <th>id</th>
+      <th>incident_year</th>
+      <th>incident_month</th>
+      <th>incident_month_year</th>
+      <th>total_population</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Eric M. Tellez</td>
+      <td>28</td>
+      <td>Male</td>
+      <td>White</td>
+      <td>2019-12-31</td>
+      <td>Broad St.</td>
+      <td>Globe</td>
+      <td>AZ</td>
+      <td>85501.0</td>
+      <td>Gila</td>
+      <td>...</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5332.0</td>
+      <td>NaN</td>
+      <td>Rural</td>
+      <td>7664</td>
+      <td>2019</td>
+      <td>12</td>
+      <td>2019-12</td>
+      <td>223553265</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Name withheld by police</td>
+      <td>36</td>
+      <td>Male</td>
+      <td>Unknown</td>
+      <td>2019-12-31</td>
+      <td>7239-7411 I-40</td>
+      <td>Memphis</td>
+      <td>AR</td>
+      <td>38103.0</td>
+      <td>Crittenden</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7665</td>
+      <td>2019</td>
+      <td>12</td>
+      <td>2019-12</td>
+      <td>22579629</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Terry Hudson</td>
+      <td>57</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>2019-12-31</td>
+      <td>3600 N 24th St</td>
+      <td>Omaha</td>
+      <td>NE</td>
+      <td>68110.0</td>
+      <td>Douglas</td>
+      <td>...</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5359.0</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7661</td>
+      <td>2019</td>
+      <td>12</td>
+      <td>2019-12</td>
+      <td>38929319</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Malik Williams</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>2019-12-31</td>
+      <td>30800 14th Avenue South</td>
+      <td>Federal Way</td>
+      <td>WA</td>
+      <td>98003.0</td>
+      <td>King</td>
+      <td>...</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5358.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7662</td>
+      <td>2019</td>
+      <td>12</td>
+      <td>2019-12</td>
+      <td>38929319</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Frederick Perkins</td>
+      <td>37</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>2019-12-31</td>
+      <td>17057 N Outer 40 Rd</td>
+      <td>Chesterfield</td>
+      <td>MO</td>
+      <td>63005.0</td>
+      <td>St. Louis</td>
+      <td>...</td>
+      <td>car</td>
+      <td>no</td>
+      <td>5333.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7667</td>
+      <td>2019</td>
+      <td>12</td>
+      <td>2019-12</td>
+      <td>38929319</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 30 columns</p>
+</div>
+
+<div class="highlight"><pre><span></span><span class="c1">#As the number of Asians and Native Americans seems very low, </span>
+<span class="c1">#we will take them out for the sake of continuing with our analysis as there could be multiple anomalies there. </span>
+<span class="c1">#visualizing people killed based on race by only looking at killings where race is known to be a prevalant factor</span>
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">]</span> 
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Asian&#39;</span><span class="p">]</span> 
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Native American&#39;</span><span class="p">]</span> 
+
+<span class="c1">#Also adding columns to count death per million and count</span>
+<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;death_per_mil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;total_population&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000000</span>
+
+<span class="c1">#Plotting total number of people killed by race</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;victim_race&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Total number of people killed, by race&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Total number of people killed, by race&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_15_1.png"></p>
+<div class="highlight"><pre><span></span><span class="n">race_based_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;total_population&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+                    <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;total_population&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+<span class="c1">#looking at the data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">race_based_counts</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">  victim_race  total_population  victim_count  death_per_mil</span>
+<span class="err">0       Black          38929319          1928      49.525654</span>
+<span class="err">1    Hispanic          50477594          1307      25.892676</span>
+<span class="err">2       White         223553265          3359      15.025502</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Visualizing people killed per million people based on race</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed as a proportion of their respective race per million&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">race_based_counts</span><span class="o">.</span><span class="n">victim_race</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">race_based_counts</span><span class="o">.</span><span class="n">death_per_mil</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fc533e7d910&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_17_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#plotting the number of people killed over time by race</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">master_sheet_race</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">size</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings: By race over time(2013-2019)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_18_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based killings by time</span>
+<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per million who get killed per year</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="p">(</span><span class="n">race_killings_per_mil</span><span class="p">[[</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings per 1M people per year: by race over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1440</span><span class="n">x720</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_20_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#checking if any seasonality exists in the data by plotting the number of people killed per month</span>
+
+<span class="c1">#plotting the killings per month over time</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
+<span class="p">(</span><span class="n">master_sheet_race</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">size</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings per month: by race over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">36000</span><span class="n">x21600</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_21_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#plotting the killings per 1M population per month over time</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
+<span class="p">(</span><span class="n">race_killings_per_mil</span><span class="p">[[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per month: by race over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">36000</span><span class="n">x21600</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_22_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#try to establish seasonality here. </span>
+<span class="c1">#see if you can come up with predictions of death per race per month </span>
+<span class="c1">#see if this can be combined with state level info</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the victim age now</span>
+<span class="c1">#visualizing the age of all people killed in our dataset</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">age_dist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">age_dist</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings: Age distribution&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;People killed in police shootings: Age distribution&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_24_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#based on the count of people killed by age, we come up with custom bins to analyze the victim age data further</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10-15&#39;</span><span class="p">,</span> <span class="s1">&#39;15-20&#39;</span><span class="p">,</span> <span class="s1">&#39;20-25&#39;</span><span class="p">,</span> <span class="s1">&#39;25-30&#39;</span><span class="p">,</span> <span class="s1">&#39;30-35&#39;</span><span class="p">,</span> <span class="s1">&#39;35-40&#39;</span><span class="p">,</span> <span class="s1">&#39;40-45&#39;</span><span class="p">,</span> <span class="s1">&#39;45-50&#39;</span><span class="p">,</span> <span class="s1">&#39;50-55&#39;</span><span class="p">,</span> <span class="s1">&#39;55-60&#39;</span><span class="p">,</span> <span class="s1">&#39;60+&#39;</span><span class="p">]</span>
+<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#visualizing the age of all people killed based on race</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">master_sheet_race</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">size</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings: by race over age&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_26_2.png"></p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based killings by time</span>
+<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per million who get killed per age group</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">race_killings_per_mil</span><span class="p">[[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per year: by race over age groups&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_29_2.png"></p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#look at the intersection of age range with time to see if there was any impact based on race over time</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the location based data now</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by state&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by state&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_32_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#looking at city based data and identifying the deadliest cities </span>
+<span class="n">deadly_city_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+
+<span class="n">deadly_city_info</span><span class="p">[</span><span class="s1">&#39;city_victim_counts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deadly_city_info</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">])[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+
+<span class="n">deadly_city_info</span> <span class="o">=</span> <span class="n">deadly_city_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">deadly_city_info</span><span class="p">[</span><span class="s1">&#39;city_victim_counts&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per million who get killed per age group</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">deadly_city_info</span><span class="p">[[</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;city_victim_counts&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by city&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">&lt;function matplotlib.pyplot.show(*args, **kw)&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_34_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#See if we can get the race based census data at city level</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">deadly_city_info2</span> <span class="o">=</span> <span class="n">deadly_city_info</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">deadly_city_info</span><span class="p">[</span><span class="s1">&#39;city_victim_counts&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">25</span><span class="p">]</span>
+<span class="c1">#Plotting the number of people per million who get killed per age group</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">deadly_city_info2</span><span class="p">[[</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over city groups&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_36_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#See if we can get the race based census data at city level and </span>
+<span class="c1">#integrate with this data to see proportion of race being killed</span>
+<span class="c1">#Also see if we can link the general crime rate </span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the police department responsible for deaths and seeing if any police department stands out</span>
+<span class="c1">#looking at PD based data and identifying the deadliest PDs </span>
+<span class="n">deadly_police_depts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
+                        <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+
+<span class="n">deadly_police_depts</span><span class="p">[</span><span class="s1">&#39;pd_victim_counts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deadly_police_depts</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;death_agency&#39;</span><span class="p">])[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+
+<span class="n">deadly_police_depts</span> <span class="o">=</span> <span class="n">deadly_police_depts</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">deadly_police_depts</span><span class="p">[</span><span class="s1">&#39;pd_victim_counts&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per race who get killed based on police department</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">deadly_police_depts</span><span class="p">[[</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per year: by race over police department&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_39_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the cause of death data now</span>
+<span class="n">cause_death</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;cause_of_death&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="c1">#plotting the most common ways of people getting killed</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">cause_death</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">cause_death</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of deaths&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Cause of deaths&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by cause of death&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by cause of death&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_40_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">##Cleaning up alleged weapon data plotting distribution of alleged weapon amongst the victims</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">==</span> <span class="s1">&#39;unknown weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">==</span> <span class="s1">&#39;unclear&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">==</span> <span class="s1">&#39;undetermined&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">==</span> <span class="s1">&#39;toy weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;toy&quot;</span>
+<span class="n">weapon</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
+<span class="n">weapon</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#plotting the most common ways of people getting killed</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">alleged_weapon</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">victim_count</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of deaths&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Alleged Weapon&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by alleged weapon&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by alleged weapon&#39;)</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_42_1.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the dealiest alleged weapons and visualizing distribution based on race</span>
+<span class="n">deadly_alleged_weapons</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+<span class="n">temp_master</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">deadly_alleged_weapons</span><span class="p">[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">],</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+
+<span class="c1">#plotting the number of deaths per million based on the alleged weapon</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">temp_master</span><span class="p">[[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_43_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#plotting the number of deaths per million based on the alleged weapon</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">temp_master</span><span class="p">[[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_44_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#looking at mental illness data to see if there is any distinction based on race</span>
+<span class="c1">#cleaning up mental illness data first </span>
+<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;Unkown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;unknown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="c1">#plotting the number of deaths based on mental illness</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_45_2.png"></p>
+<div class="highlight"><pre><span></span><span class="c1">#looking at mental illness data to see if there is any distinction based on race</span>
+<span class="c1">#cleaning up mental illness data first </span>
+<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;Unkown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;unknown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
+<span class="c1">#plotting the number of deaths based on mental illness</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
+ <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+ <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
+
+
+
+
+<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<p><img alt="png" src="output_46_2.png"></p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;body_cam&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;Surveillance Video&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span>
+<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;Bystander Video&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span>
+<span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th></th>
+      <th colspan="3" halign="left">victim_count</th>
+    </tr>
+    <tr>
+      <th>victim_race</th>
+      <th>Black</th>
+      <th>Hispanic</th>
+      <th>White</th>
+    </tr>
+    <tr>
+      <th>geography</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Rural</th>
+      <td>194</td>
+      <td>155</td>
+      <td>1078</td>
+    </tr>
+    <tr>
+      <th>Suburban</th>
+      <td>879</td>
+      <td>692</td>
+      <td>1714</td>
+    </tr>
+    <tr>
+      <th>Urban</th>
+      <td>838</td>
+      <td>455</td>
+      <td>540</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Getting census data from 2015 from kaggle : https://www.kaggle.com/kwullum/fatal-police-shootings-in-the-us</span>
+<span class="n">median_household_data_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;datasets_MedianHouseholdIncome2015.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;windows-1254&#39;</span><span class="p">)</span>
+<span class="n">percent_below_poverty_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;datasets_PercentagePeopleBelowPovertyLevel.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;windows-1254&#39;</span><span class="p">)</span>
+<span class="n">percent_completed_highschool_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;datasets_PercentOver25CompletedHighSchool.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;windows-1254&#39;</span><span class="p">)</span>
+<span class="n">city_race_share_2015</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;datasets_ShareRaceByCity.csv&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;windows-1254&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#Looking at some additional data to elevate our analysis - Adding census data from 2015 from the following sources:</span>
+<span class="c1">#source - https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/cities/totals/</span>
+<span class="n">abbr</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;city&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;town&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;village&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;CDP&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;borough&#39;</span><span class="p">:</span><span class="s1">&#39;&#39;</span><span class="p">}</span>
+<span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#this is a cool way to do this</span>
+<span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">median_household_data_2015</span><span class="p">[</span><span class="s1">&#39;Geographic Area&#39;</span><span class="p">]</span>
+<span class="n">median_household_data_2015</span> <span class="o">=</span> <span class="n">median_household_data_2015</span><span class="p">[[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span><span class="s1">&#39;Median Income&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">median_household_data_2015</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span><span class="s1">&#39;city_median_income&#39;</span><span class="p">]</span>
+<span class="n">median_household_data_2015</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+<span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#this is a cool way to do this</span>
+<span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">percent_below_poverty_2015</span><span class="p">[</span><span class="s1">&#39;Geographic Area&#39;</span><span class="p">]</span>
+<span class="n">percent_below_poverty_2015</span> <span class="o">=</span> <span class="n">percent_below_poverty_2015</span><span class="p">[[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span><span class="s1">&#39;poverty_rate&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">percent_below_poverty_2015</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span><span class="s1">&#39;city_poverty_rate&#39;</span><span class="p">]</span>
+
+<span class="n">city_extra_data</span> <span class="o">=</span> <span class="n">median_household_data_2015</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">percent_below_poverty_2015</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+<span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#this is a cool way to do this</span>
+<span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">percent_completed_highschool_2015</span><span class="p">[</span><span class="s1">&#39;Geographic Area&#39;</span><span class="p">]</span>
+<span class="n">percent_completed_highschool_2015</span> <span class="o">=</span> <span class="n">percent_completed_highschool_2015</span><span class="p">[[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span><span class="s1">&#39;percent_completed_hs&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+<span class="n">city_extra_data</span> <span class="o">=</span> <span class="n">city_extra_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">percent_completed_highschool_2015</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+
+<span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;City&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#this is a cool way to do this</span>
+<span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">city_race_share_2015</span><span class="p">[</span><span class="s1">&#39;Geographic area&#39;</span><span class="p">]</span>
+<span class="n">city_race_share_2015</span> <span class="o">=</span> <span class="n">city_race_share_2015</span><span class="p">[[</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="s1">&#39;share_white&#39;</span><span class="p">,</span> <span class="s1">&#39;share_black&#39;</span><span class="p">,</span> <span class="s1">&#39;share_native_american&#39;</span><span class="p">,</span> <span class="s1">&#39;share_asian&#39;</span><span class="p">,</span> <span class="s1">&#39;share_hispanic&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+
+<span class="n">city_extra_data</span> <span class="o">=</span> <span class="n">city_extra_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">city_race_share_2015</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+
+<span class="n">us_state_abbrev</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Alabama&#39;</span><span class="p">:</span> <span class="s1">&#39;AL&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Alaska&#39;</span><span class="p">:</span> <span class="s1">&#39;AK&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;American Samoa&#39;</span><span class="p">:</span> <span class="s1">&#39;AS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Arizona&#39;</span><span class="p">:</span> <span class="s1">&#39;AZ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Arkansas&#39;</span><span class="p">:</span> <span class="s1">&#39;AR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;California&#39;</span><span class="p">:</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Colorado&#39;</span><span class="p">:</span> <span class="s1">&#39;CO&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Connecticut&#39;</span><span class="p">:</span> <span class="s1">&#39;CT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Delaware&#39;</span><span class="p">:</span> <span class="s1">&#39;DE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;District of Columbia&#39;</span><span class="p">:</span> <span class="s1">&#39;DC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Florida&#39;</span><span class="p">:</span> <span class="s1">&#39;FL&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Georgia&#39;</span><span class="p">:</span> <span class="s1">&#39;GA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Guam&#39;</span><span class="p">:</span> <span class="s1">&#39;GU&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Hawaii&#39;</span><span class="p">:</span> <span class="s1">&#39;HI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Idaho&#39;</span><span class="p">:</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Illinois&#39;</span><span class="p">:</span> <span class="s1">&#39;IL&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Indiana&#39;</span><span class="p">:</span> <span class="s1">&#39;IN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Iowa&#39;</span><span class="p">:</span> <span class="s1">&#39;IA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Kansas&#39;</span><span class="p">:</span> <span class="s1">&#39;KS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Kentucky&#39;</span><span class="p">:</span> <span class="s1">&#39;KY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Louisiana&#39;</span><span class="p">:</span> <span class="s1">&#39;LA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Maine&#39;</span><span class="p">:</span> <span class="s1">&#39;ME&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Maryland&#39;</span><span class="p">:</span> <span class="s1">&#39;MD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Massachusetts&#39;</span><span class="p">:</span> <span class="s1">&#39;MA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Michigan&#39;</span><span class="p">:</span> <span class="s1">&#39;MI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Minnesota&#39;</span><span class="p">:</span> <span class="s1">&#39;MN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Mississippi&#39;</span><span class="p">:</span> <span class="s1">&#39;MS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Missouri&#39;</span><span class="p">:</span> <span class="s1">&#39;MO&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Montana&#39;</span><span class="p">:</span> <span class="s1">&#39;MT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Nebraska&#39;</span><span class="p">:</span> <span class="s1">&#39;NE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Nevada&#39;</span><span class="p">:</span> <span class="s1">&#39;NV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;New Hampshire&#39;</span><span class="p">:</span> <span class="s1">&#39;NH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;New Jersey&#39;</span><span class="p">:</span> <span class="s1">&#39;NJ&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;New Mexico&#39;</span><span class="p">:</span> <span class="s1">&#39;NM&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;New York&#39;</span><span class="p">:</span> <span class="s1">&#39;NY&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;North Carolina&#39;</span><span class="p">:</span> <span class="s1">&#39;NC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;North Dakota&#39;</span><span class="p">:</span> <span class="s1">&#39;ND&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Northern Mariana Islands&#39;</span><span class="p">:</span><span class="s1">&#39;MP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ohio&#39;</span><span class="p">:</span> <span class="s1">&#39;OH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Oklahoma&#39;</span><span class="p">:</span> <span class="s1">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Oregon&#39;</span><span class="p">:</span> <span class="s1">&#39;OR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Pennsylvania&#39;</span><span class="p">:</span> <span class="s1">&#39;PA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Puerto Rico&#39;</span><span class="p">:</span> <span class="s1">&#39;PR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Rhode Island&#39;</span><span class="p">:</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;South Carolina&#39;</span><span class="p">:</span> <span class="s1">&#39;SC&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;South Dakota&#39;</span><span class="p">:</span> <span class="s1">&#39;SD&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Tennessee&#39;</span><span class="p">:</span> <span class="s1">&#39;TN&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Texas&#39;</span><span class="p">:</span> <span class="s1">&#39;TX&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Utah&#39;</span><span class="p">:</span> <span class="s1">&#39;UT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Vermont&#39;</span><span class="p">:</span> <span class="s1">&#39;VT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Virgin Islands&#39;</span><span class="p">:</span> <span class="s1">&#39;VI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Virginia&#39;</span><span class="p">:</span> <span class="s1">&#39;VA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Washington&#39;</span><span class="p">:</span> <span class="s1">&#39;WA&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;West Virginia&#39;</span><span class="p">:</span> <span class="s1">&#39;WV&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Wisconsin&#39;</span><span class="p">:</span> <span class="s1">&#39;WI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Wyoming&#39;</span><span class="p">:</span> <span class="s1">&#39;WY&#39;</span>
+<span class="p">}</span>
+
+<span class="n">pop_est_by_city</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;state2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">us_state_abbrev</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#this is a cool way to do this</span>
+<span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city2&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">+</span><span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;state2&#39;</span><span class="p">]</span>
+<span class="n">pop_est_by_city</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;city2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">city_extra_data</span> <span class="o">=</span> <span class="n">city_extra_data</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">pop_est_by_city</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;city2&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">---------------------------------------------------------------------------</span>
+
+<span class="n">NameError</span>                                 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="k">call</span> <span class="k">last</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="k">input</span><span class="o">-</span><span class="mi">46</span><span class="o">-</span><span class="mi">0</span><span class="n">eb21eb0a38f</span><span class="o">&gt;</span> <span class="k">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+     <span class="mi">92</span> <span class="err">}</span>
+     <span class="mi">93</span> 
+<span class="c1">---&gt; 94 pop_est_by_city = pop_est_by_city.groupby([&#39;city&#39;,&#39;state&#39;]).max().reset_index()</span>
+     <span class="mi">95</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;state2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">].</span><span class="k">replace</span><span class="p">(</span><span class="n">us_state_abbrev</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+     <span class="mi">96</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_est_by_city</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">].</span><span class="k">replace</span><span class="p">(</span><span class="n">abbr</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="k">True</span><span class="p">)</span> <span class="o">#</span><span class="n">this</span> <span class="k">is</span> <span class="n">a</span> <span class="n">cool</span> <span class="n">way</span> <span class="k">to</span> <span class="k">do</span> <span class="n">this</span>
+
+
+<span class="n">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;pop_est_by_city&#39;</span> <span class="k">is</span> <span class="k">not</span> <span class="k">defined</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>
+</pre></div>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'shikhar3295'; // required: replace example with your forum shortname
+
+            var disqus_config = function () {
+                this.language = "en";
+
+                        this.page.identifier = '2020-06-19-my-first-blog-post';
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+<!-- Sidebar -->
+<section class="well well-sm">
+  <ul class="list-group list-group-flush">
+
+<!-- Sidebar/Social -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+  <ul class="list-group" id="social">
+    <li class="list-group-item"><a href="https://linkedin.com/in/srujansharma"><i class="fa fa-linkedin-square fa-lg"></i> LinkedIn</a></li>
+    <li class="list-group-item"><a href="https://github.com/shikhar3295"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Social -->
+
+<!-- Sidebar/Links -->
+<li class="list-group-item">
+  <h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+  <ul class="list-group" id="links">
+    <li class="list-group-item">
+      <a href="http://getpelican.com/" target="_blank">Pelican</a>
+    </li>
+    <li class="list-group-item">
+      <a href="http://python.org/" target="_blank">Python.org</a>
+    </li>
+    <li class="list-group-item">
+      <a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a>
+    </li>
+    <li class="list-group-item">
+      <a href="#" target="_blank">You can modify those links in your config file</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Links -->
+  </ul>
+</section>
+<!-- End Sidebar -->            </aside>
+        </div>
+    </div>
+</div>
+<!-- End Content Container -->
+
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2020 Srujan Sharma
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'shikhar3295'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+
+
+</body>
+</html>
