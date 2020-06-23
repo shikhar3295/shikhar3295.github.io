@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
-    <title>Black Lives Matter - Data Exploration using Police Shootings Data - Srujan Sharma's Blog</title>
+    <title>Black Lives Matter Project - visualizing police shooting - Srujan Sharma's Blog</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -9,22 +9,23 @@
 
 
 
-<link rel="canonical" href="/BLM-shootings-data.html">
+<link rel="canonical" href="/BLM-project-part-1.html">
 
         <meta name="author" content="Srujan Sharma" />
-        <meta name="keywords" content="python,BLM,police shootings" />
-        <meta name="description" content="Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 BLM_Project A project to dig deeper into the effects of systematic racism in the United States Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 import pandas as pd …" />
+        <meta name="keywords" content="python,BLM,police shootings,Data Science" />
+        <meta name="description" content="Part 1 - Data Exploration &amp; Visualization In this dataset, we have data on all the deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in …" />
 
         <meta property="og:site_name" content="Srujan Sharma's Blog" />
         <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Black Lives Matter - Data Exploration using Police Shootings Data"/>
-        <meta property="og:url" content="/BLM-shootings-data.html"/>
-        <meta property="og:description" content="Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 BLM_Project A project to dig deeper into the effects of systematic racism in the United States Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 import pandas as pd …"/>
+        <meta property="og:title" content="Black Lives Matter Project - visualizing police shooting"/>
+        <meta property="og:url" content="/BLM-project-part-1.html"/>
+        <meta property="og:description" content="Part 1 - Data Exploration &amp; Visualization In this dataset, we have data on all the deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in …"/>
         <meta property="article:published_time" content="2020-06-19" />
             <meta property="article:section" content="blogging" />
             <meta property="article:tag" content="python" />
             <meta property="article:tag" content="BLM" />
             <meta property="article:tag" content="police shootings" />
+            <meta property="article:tag" content="Data Science" />
             <meta property="article:author" content="Srujan Sharma" />
 
 
@@ -80,10 +81,10 @@ Srujan Sharma's Blog            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="/BLM-shootings-data.html"
+                    <a href="/BLM-project-part-1.html"
                        rel="bookmark"
-                       title="Permalink to Black Lives Matter - Data Exploration using Police Shootings Data">
-                        Black Lives Matter - Data Exploration using Police Shootings Data
+                       title="Permalink to Black Lives Matter Project - visualizing police shooting">
+                        Black Lives Matter Project - visualizing police shooting
                     </a>
                 </h1>
             </header>
@@ -106,14 +107,18 @@ Srujan Sharma's Blog            </a>
 	<a href="/tag/blm.html">BLM</a>
         /
 	<a href="/tag/police-shootings.html">police shootings</a>
+        /
+	<a href="/tag/data-science.html">Data Science</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <p>Data Visualization exercise based on the people killed in police shootings between 2013 and 2019 </p>
-<h1>BLM_Project</h1>
-<p>A project to dig deeper into the effects of systematic racism in the United States</p>
-<p>Data Visualization exercise based on the people killed in police shootings between 2013 and 2019</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+                <h2>Part 1 - Data Exploration &amp; Visualization</h2>
+<p>In this dataset, we have data on all the deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in the shootings and combining census data on a city level to see if there is any correlation between factors like median household income, crime rate, etc with the number of police shootings in the area.</p>
+<h2>Initialization</h2>
+<p>First of all, we import the libraries we will use, configure some
+settings, and load the dataset.</p>
+<div class="highlight"><pre><span></span><span class="c1">#Defining libraries</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -125,35 +130,338 @@ Srujan Sharma's Blog            </a>
 
 
 <div class="highlight"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;/Users/shikharsharma/Downloads/Python_Projects/Datasets/US_shootings_data&#39;</span><span class="p">)</span>
+<span class="c1"># Notebook display config</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">max_rows</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="c1">#Getting police killings data from https://mappingpoliceviolence.org/</span>
+<div class="highlight"><pre><span></span><span class="c1">#Getting police shootings data from https://mappingpoliceviolence.org/</span>
 <span class="n">mpv_police_dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;MPVDatasetDownload.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="c1">#creating a master sheet and going column by column to visualize the data and see if it needs to be cleaned</span>
+<div class="highlight"><pre><span></span><span class="c1">#Looking at the data</span>
+<span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>victim_name</th>
+      <th>victim_age</th>
+      <th>victim_gender</th>
+      <th>victim_race</th>
+      <th>url_vitcim_image</th>
+      <th>date_of_incident</th>
+      <th>incident_address</th>
+      <th>city</th>
+      <th>state</th>
+      <th>zip</th>
+      <th>...</th>
+      <th>mental_illness</th>
+      <th>unarmed</th>
+      <th>alleged_weapon</th>
+      <th>alleged_threat_level</th>
+      <th>fleeing</th>
+      <th>body_cam</th>
+      <th>wapo_id</th>
+      <th>off_duty_killing</th>
+      <th>geography</th>
+      <th>id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Eric M. Tellez</td>
+      <td>28</td>
+      <td>Male</td>
+      <td>White</td>
+      <td>https://fatalencounters.org/wp-content/uploads...</td>
+      <td>2019-12-31</td>
+      <td>Broad St.</td>
+      <td>Globe</td>
+      <td>AZ</td>
+      <td>85501.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>knife</td>
+      <td>other</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5332.0</td>
+      <td>NaN</td>
+      <td>Rural</td>
+      <td>7664</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Name withheld by police</td>
+      <td>NaN</td>
+      <td>Male</td>
+      <td>Unknown race</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>7239-7411 I-40</td>
+      <td>Memphis</td>
+      <td>AR</td>
+      <td>38103.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Unclear</td>
+      <td>unclear</td>
+      <td>other</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7665</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Terry Hudson</td>
+      <td>57</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>3600 N 24th St</td>
+      <td>Omaha</td>
+      <td>NE</td>
+      <td>68110.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>gun</td>
+      <td>attack</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5359.0</td>
+      <td>NaN</td>
+      <td>Urban</td>
+      <td>7661</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Malik Williams</td>
+      <td>23</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>30800 14th Avenue South</td>
+      <td>Federal Way</td>
+      <td>WA</td>
+      <td>98003.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Allegedly Armed</td>
+      <td>gun</td>
+      <td>attack</td>
+      <td>not fleeing</td>
+      <td>no</td>
+      <td>5358.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7662</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Frederick Perkins</td>
+      <td>37</td>
+      <td>Male</td>
+      <td>Black</td>
+      <td>NaN</td>
+      <td>2019-12-31</td>
+      <td>17057 N Outer 40 Rd</td>
+      <td>Chesterfield</td>
+      <td>MO</td>
+      <td>63005.0</td>
+      <td>...</td>
+      <td>No</td>
+      <td>Vehicle</td>
+      <td>vehicle</td>
+      <td>attack</td>
+      <td>car</td>
+      <td>no</td>
+      <td>5333.0</td>
+      <td>NaN</td>
+      <td>Suburban</td>
+      <td>7667</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 27 columns</p>
+</div>
+
+<h2>Dataset cleaning</h2>
+<p>Now, we will check the consistency of the dataset, looking for not
+valid values (NULL, NaN) or duplicates</p>
+<div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Any Null ?: &quot;</span><span class="p">,</span> <span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Any NaN ?: &quot;</span><span class="p">,</span> <span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">Any Null ?:  True</span>
+<span class="err">Any NaN ?:  True</span>
+</pre></div>
+
+
+<p>We are seeing some null values show up. We will proceed to clean up the data by eliminating some 
+columns with the most amount of null entries and see if we can clean up some fields that are essential to our analysis.</p>
+<div class="highlight"><pre><span></span><span class="c1">#looking at the fill rate for each column</span>
+<span class="n">mpv_police_dataset</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">victim_name                0</span>
+<span class="err">victim_age                67</span>
+<span class="err">victim_gender              8</span>
+<span class="err">victim_race                0</span>
+<span class="err">url_vitcim_image        3462</span>
+<span class="err">date_of_incident           0</span>
+<span class="err">incident_address          83</span>
+<span class="err">city                       6</span>
+<span class="err">state                      0</span>
+<span class="err">zip                       39</span>
+<span class="err">county                    15</span>
+<span class="err">death_agency              16</span>
+<span class="err">cause_of_death             0</span>
+<span class="err">brief_description         20</span>
+<span class="err">official_disposition     256</span>
+<span class="err">criminal_charge            0</span>
+<span class="err">news_link                 12</span>
+<span class="err">mental_illness            11</span>
+<span class="err">unarmed                    0</span>
+<span class="err">alleged_weapon             0</span>
+<span class="err">alleged_threat_level    2382</span>
+<span class="err">fleeing                 2616</span>
+<span class="err">body_cam                2869</span>
+<span class="err">wapo_id                 2785</span>
+<span class="err">off_duty_killing        7437</span>
+<span class="err">geography                 67</span>
+<span class="err">id                         0</span>
+<span class="c">dtype: int64</span>
+</pre></div>
+
+
+<p>As per our analysis, we see that we need to eliminate the following columns: 
+- url_vitcim_image
+- wapo_id </p>
+<p>We will also be cleaning up the following columns: </p>
+<ul>
+<li>victim_age - converting all unknown ages to mean age </li>
+<li>victim_gender - converting nulls to unknown</li>
+<li>official_disposition - Convert all null values to pending investigation</li>
+<li>alleged_threat_level - Convert all null values to unknown</li>
+<li>fleeing - convert null and O values to unknown</li>
+<li>body_cam - convert all null values to unknown</li>
+<li>off_duty_killing - convert all null values to no</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1">#first creating a master sheet with only the needed columns</span>
 <span class="n">master_sheet</span> <span class="o">=</span> <span class="n">mpv_police_dataset</span><span class="p">[[</span><span class="s1">&#39;victim_name&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_age&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_gender&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;date_of_incident&#39;</span><span class="p">,</span> <span class="s1">&#39;incident_address&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;county&#39;</span><span class="p">,</span> <span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;cause_of_death&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;brief_description&#39;</span><span class="p">,</span> <span class="s1">&#39;official_disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;criminal_charge&#39;</span><span class="p">,</span><span class="s1">&#39;news_link&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;unarmed&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;alleged_threat_level&#39;</span><span class="p">,</span> <span class="s1">&#39;fleeing&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">,</span> <span class="s1">&#39;wapo_id&#39;</span><span class="p">,</span><span class="s1">&#39;off_duty_killing&#39;</span><span class="p">,</span> <span class="s1">&#39;geography&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]]</span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">columns</span>
+       <span class="s1">&#39;date_of_incident&#39;</span><span class="p">,</span> <span class="s1">&#39;incident_address&#39;</span><span class="p">,</span> <span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;zip&#39;</span><span class="p">,</span> <span class="s1">&#39;county&#39;</span><span class="p">,</span> <span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> 
+       <span class="s1">&#39;cause_of_death&#39;</span><span class="p">,</span><span class="s1">&#39;brief_description&#39;</span><span class="p">,</span> <span class="s1">&#39;official_disposition&#39;</span><span class="p">,</span> <span class="s1">&#39;criminal_charge&#39;</span><span class="p">,</span><span class="s1">&#39;news_link&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;unarmed&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span><span class="s1">&#39;alleged_threat_level&#39;</span><span class="p">,</span> <span class="s1">&#39;fleeing&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">,</span> 
+                                   <span class="s1">&#39;off_duty_killing&#39;</span><span class="p">,</span> <span class="s1">&#39;geography&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">]]</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Index([&#39;victim_name&#39;, &#39;victim_age&#39;, &#39;victim_gender&#39;, &#39;victim_race&#39;,</span>
-<span class="err">       &#39;date_of_incident&#39;, &#39;incident_address&#39;, &#39;city&#39;, &#39;state&#39;, &#39;zip&#39;,</span>
-<span class="err">       &#39;county&#39;, &#39;death_agency&#39;, &#39;cause_of_death&#39;, &#39;brief_description&#39;,</span>
-<span class="err">       &#39;official_disposition&#39;, &#39;criminal_charge&#39;, &#39;news_link&#39;,</span>
-<span class="err">       &#39;mental_illness&#39;, &#39;unarmed&#39;, &#39;alleged_weapon&#39;, &#39;alleged_threat_level&#39;,</span>
-<span class="err">       &#39;fleeing&#39;, &#39;body_cam&#39;, &#39;wapo_id&#39;, &#39;off_duty_killing&#39;, &#39;geography&#39;,</span>
-<span class="err">       &#39;id&#39;],</span>
-<span class="err">      dtype=&#39;object&#39;)</span>
+<div class="highlight"><pre><span></span><span class="c1">#Cleaning up the victim age data</span>
+<span class="n">master_sheet</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;40s&#39;</span><span class="p">)]</span> 
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+<span class="c1">#Dealing with missing AGE values. Set them to mean of all ages. </span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="c1">#looking at the most common names of people killed. </span>
+<div class="highlight"><pre><span></span><span class="c1">#cleaning up the other data</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_gender</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">official_disposition</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">alleged_threat_level</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">fleeing</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">fleeing</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">body_cam</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">body_cam</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">off_duty_killing</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+</pre></div>
+
+
+<h3>Further Cleanup</h3>
+<p>Now we convert the incident date to datetime and look at the race data </p>
+<div class="highlight"><pre><span></span><span class="c1">#looking at the incident date and dividing it into year, month and month-year combo</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">])</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#visualizing distribution based on race &amp; seeing if the data needs to be cleaned up. </span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="err">White               3359</span>
+<span class="err">Black               1928</span>
+<span class="err">Hispanic            1307</span>
+<span class="err">Unknown race         619</span>
+<span class="err">Asian                118</span>
+<span class="err">Native American      109</span>
+<span class="err">Pacific Islander      42</span>
+<span class="err">Unknown Race          42</span>
+<span class="c">Name: victim_race, dtype: int64</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1">#cleaning up unknown race data </span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown Race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Other&quot;</span>
+<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Other&quot;</span>
+</pre></div>
+
+
+<h3>Additional Data</h3>
+<p>Adding race based population to add enhanced layer of detail to our analysis</p>
+<div class="highlight"><pre><span></span><span class="c1">#adding the total population by race for US: from https://en.wikipedia.org/wiki/Demography_of_the_United_States</span>
+<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Asian&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;White&quot;</span><span class="p">,</span> 
+              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Hispanic&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Black&quot;</span><span class="p">,</span>
+              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Native American&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Other&quot;</span><span class="p">]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14674252</span><span class="p">,</span> <span class="mi">223553265</span><span class="p">,</span> <span class="mi">50477594</span><span class="p">,</span> <span class="mi">38929319</span><span class="p">,</span> <span class="mi">2932248</span><span class="p">,</span> <span class="mi">22579629</span><span class="p">]</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;total_population&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Also adding a column to keep count of victims (useful in complex group by statements) and a column to visualize each death per million people of that particular race in the country (useful in determining per capita deaths)</p>
+<div class="highlight"><pre><span></span><span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;death_per_mil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span><span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;total_population&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000000</span>
+</pre></div>
+
+
+<h2>Data Visualization</h2>
+<p>We will look at visualizing different aspects of the data to look for trends. Here, we will be plotting different types of graphs to understand the data better. </p>
+<h3>Victim Name</h3>
+<p>Starting with looking at the name of the people who were killed in the police shootings:</p>
+<div class="highlight"><pre><span></span><span class="c1">#creating a seperate sheet and creating a count vector for both names and surnames combined. </span>
 <span class="n">separate</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_name</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_name</span> <span class="o">!=</span> <span class="s1">&#39;Name withheld by police&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
 <span class="n">a</span><span class="p">,</span><span class="n">b</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">separate</span><span class="p">)</span>      <span class="c1">#a=name b=surname             </span>
 <span class="n">name_list</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">b</span>                         
@@ -161,7 +469,7 @@ Srujan Sharma's Blog            </a>
 <span class="n">most_common_names</span> <span class="o">=</span> <span class="n">name_count</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>  
 <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">most_common_names</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">list</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="c1"># </span>
+<span class="c1"># Plotting the graph of the 15 most common names and surnames based on victim_name</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">palette</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">cubehelix_palette</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Name / Surname of killed people&#39;</span><span class="p">)</span>
@@ -174,90 +482,37 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_6_1.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#Looking with victim_race - visualizing distribution based on race &amp; seeing if the data needs to be cleaned up. </span>
+<p><img alt="png" src="/images/output_25_1.png"></p>
+<p>Here we can see the most common names are Michael &amp; James -- with over 500 people with these 2 names being killed. </p>
+<h3>Victim Race</h3>
+<p>Looking at the victim race data </p>
+<div class="highlight"><pre><span></span><span class="c1">#visualizing distribution based on race</span>
 <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">White               3378</span>
-<span class="err">Black               1944</span>
-<span class="err">Hispanic            1335</span>
-<span class="err">Unknown race         670</span>
+<div class="highlight"><pre><span></span><span class="err">White               3359</span>
+<span class="err">Black               1928</span>
+<span class="err">Hispanic            1307</span>
+<span class="err">Other                661</span>
 <span class="err">Asian                118</span>
-<span class="err">Native American      112</span>
-<span class="err">Unknown Race          64</span>
+<span class="err">Native American      109</span>
 <span class="err">Pacific Islander      42</span>
 <span class="c">Name: victim_race, dtype: int64</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="c1">#cleaning up the unknown race data</span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown Race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Unknown race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">==</span> <span class="s1">&#39;Pacific Islander&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<p>As the number of Asians, Native Americans and Pacific islanders seems very low, we will take them out for the sake of continuing with our analysis as there could be multiple anomalies there. </p>
+<div class="highlight"><pre><span></span><span class="c1">#creating a new dataframe where race is either black white or hispanic</span>
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Other&#39;</span><span class="p">]</span> 
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Asian&#39;</span><span class="p">]</span> 
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Native American&#39;</span><span class="p">]</span> 
+<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Pacific Islander&#39;</span><span class="p">]</span> 
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">shikharsharma</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="mf">.7</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">pandas</span><span class="o">/</span><span class="n">core</span><span class="o">/</span><span class="n">indexing</span><span class="p">.</span><span class="nl">py</span><span class="p">:</span><span class="mi">965</span><span class="err">:</span><span class="w"> </span><span class="nl">SettingWithCopyWarning</span><span class="p">:</span><span class="w"> </span>
-<span class="n">A</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">trying</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">copy</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">slice</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">DataFrame</span><span class="p">.</span><span class="w"></span>
-<span class="k">Try</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="p">.</span><span class="n">loc</span><span class="o">[</span><span class="n">row_indexer,col_indexer</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">value</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
-
-<span class="n">See</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">caveats</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nl">documentation</span><span class="p">:</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">pandas</span><span class="p">.</span><span class="n">pydata</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">pandas</span><span class="o">-</span><span class="n">docs</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">user_guide</span><span class="o">/</span><span class="n">indexing</span><span class="p">.</span><span class="n">html#returning</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="k">view</span><span class="o">-</span><span class="n">versus</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">copy</span><span class="w"></span>
-<span class="w">  </span><span class="n">self</span><span class="p">.</span><span class="n">obj</span><span class="o">[</span><span class="n">item</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">s</span><span class="w"></span>
-
-
-
-
-
-<span class="n">White</span><span class="w">              </span><span class="mi">3378</span><span class="w"></span>
-<span class="n">Black</span><span class="w">              </span><span class="mi">1944</span><span class="w"></span>
-<span class="n">Hispanic</span><span class="w">           </span><span class="mi">1335</span><span class="w"></span>
-<span class="k">Unknown</span><span class="w">             </span><span class="mi">776</span><span class="w"></span>
-<span class="n">Asian</span><span class="w">               </span><span class="mi">118</span><span class="w"></span>
-<span class="n">Native</span><span class="w"> </span><span class="n">American</span><span class="w">     </span><span class="mi">112</span><span class="w"></span>
-<span class="nl">Name</span><span class="p">:</span><span class="w"> </span><span class="n">victim_race</span><span class="p">,</span><span class="w"> </span><span class="nl">dtype</span><span class="p">:</span><span class="w"> </span><span class="n">int64</span><span class="w"></span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#Cleaning up the victim age data</span>
-<span class="n">master_sheet</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">!=</span> <span class="s1">&#39;40s&#39;</span><span class="p">)]</span> 
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># Dealing with missing AGE values. Set them to mean of all ages. </span>
-<span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_age</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#looking at the incident date and dividing it into year, month and month-year combo</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">])</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s1">&#39;date_of_incident&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#adding the total population by race for US: from https://en.wikipedia.org/wiki/Demography_of_the_United_States</span>
-<span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span><span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Asian&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;White&quot;</span><span class="p">,</span> 
-              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Hispanic&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Black&quot;</span><span class="p">,</span>
-              <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Native American&quot;</span><span class="p">,</span> <span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;victim_race&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Unknown&quot;</span><span class="p">]</span>
-<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14674252</span><span class="p">,</span> <span class="mi">223553265</span><span class="p">,</span> <span class="mi">50477594</span><span class="p">,</span> <span class="mi">38929319</span><span class="p">,</span> <span class="mi">2932248</span><span class="p">,</span> <span class="mi">22579629</span><span class="p">]</span>
-<span class="n">master_sheet</span><span class="p">[</span><span class="s2">&quot;total_population&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;zero&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#As the number of Asians and Native Americans seems very low, </span>
-<span class="c1">#we will take them out for the sake of continuing with our analysis as there could be multiple anomalies there. </span>
-<span class="c1">#visualizing people killed based on race by only looking at killings where race is known to be a prevalant factor</span>
-<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">]</span> 
-<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Asian&#39;</span><span class="p">]</span> 
-<span class="n">master_sheet_race</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet</span><span class="o">.</span><span class="n">victim_race</span> <span class="o">!=</span> <span class="s1">&#39;Native American&#39;</span><span class="p">]</span> 
-
-<span class="c1">#Also adding columns to count death per million and count</span>
-<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;death_per_mil&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;total_population&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000000</span>
-
-<span class="c1">#Plotting total number of people killed by race</span>
+<h5>Looking at the total number of people killed by race:</h5>
+<div class="highlight"><pre><span></span><span class="c1">#Plotting total number of people killed by race</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;victim_race&quot;</span><span class="p">)</span>
 
@@ -269,8 +524,12 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_12_1.png"></p>
-<div class="highlight"><pre><span></span><span class="n">race_based_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;total_population&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+<p><img alt="png" src="/images/output_32_1.png"></p>
+<p>This graph shows us a partial picture, as the number of white people killed to be seems a lot higher than black and hispanic people. We then include the overall population of each race and compare the number of people killed per million people of the race. </p>
+<h5>We will be using this method going forward for our other analysis as well.</h5>
+<h4>Looking at the counts of people killed per million:</h4>
+<div class="highlight"><pre><span></span><span class="c1">#creating a new dataframe to capture total number of deaths per million</span>
+<span class="n">race_based_counts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;total_population&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
                     <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;total_population&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
 <span class="c1">#looking at the data</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">race_based_counts</span><span class="p">)</span>
@@ -291,36 +550,19 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fd44a6091d0&gt;</span>
+<div class="highlight"><pre><span></span><span class="err">&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f934de7d310&gt;</span>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_14_1.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#plotting the number of people killed over time by race</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="p">(</span><span class="n">master_sheet_race</span>
- <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
- <span class="o">.</span><span class="n">size</span><span class="p">()</span>
- <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
- <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings: By race over time(2013-2019)&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p><img alt="png" src="/images/output_15_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based killings by time</span>
-<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+<p><img alt="png" src="/images/output_36_1.png"></p>
+<h3>First signs of racism?</h3>
+<p>Here, we start seeing a very different tale. By the counts of it, a black person is 3 times more likely to be killed as compared to a white person. Similarly, a black person is twice as likely to be killed as compared to a hispanic person. </p>
+<h3>Looking at deadly police shootings over time</h3>
+<p>Looking further to see how the police shootings have progressed over the last 7 years. 
+- Here, we plot the number of people killed (per million) over the last 7 years. </p>
+<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based shootings by time</span>
+<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
                         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
 </pre></div>
 
@@ -347,10 +589,12 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_17_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#checking if any seasonality exists in the data by plotting the number of people killed per month</span>
-
-<span class="c1">#plotting the killings per month over time</span>
+<p><img alt="png" src="/images/output_40_2.png"></p>
+<p>This graph shows what was earlier visualized in the overall chart, that there is definitely focus on the race of a person. Here, we can see that we have atleast 7 black people per million being killed in police shootings per year.</p>
+<h3>Checking for seasonality</h3>
+<p>Seeing if there is any effect of certain months over time on the number of shootings</p>
+<h5>First looking at overall number of shootings per month per race.</h5>
+<div class="highlight"><pre><span></span><span class="c1">#plotting the shootings per month over time</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
 <span class="p">(</span><span class="n">master_sheet_race</span>
  <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
@@ -372,8 +616,9 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_18_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#plotting the killings per 1M population per month over time</span>
+<p><img alt="png" src="/images/output_44_2.png"></p>
+<p>While we see some dips in the data, there is no indication of seasonality based on the number of people killed per month. We will now look at the same kind of graph to visualize death per million</p>
+<div class="highlight"><pre><span></span><span class="c1">#plotting the vicitms per 1M population per month over time</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">300</span><span class="p">))</span>
 <span class="p">(</span><span class="n">race_killings_per_mil</span><span class="p">[[</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
  <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;incident_month_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
@@ -381,7 +626,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per month: by race over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Deadly shootings per 1M people per month: by race over time&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -395,15 +640,11 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_19_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#try to establish seasonality here. </span>
-<span class="c1">#see if you can come up with predictions of death per race per month </span>
-<span class="c1">#see if this can be combined with state level info</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#Looking at the victim age now</span>
-<span class="c1">#visualizing the age of all people killed in our dataset</span>
+<p><img alt="png" src="/images/output_46_2.png"></p>
+<p>Here, we observe a slight dip in the percentage of people being killed around the end/start of the year -- especially for black people. This is an interesting observation and we will note it down to see if there is any more data around this and if this can be explored further. </p>
+<h2>Victim Age</h2>
+<p>Looking further at the age of people killed and visualizing any trends based on the data</p>
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the age of all people killed in our dataset</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 <span class="n">age_dist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 <span class="n">age_dist</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
@@ -415,15 +656,15 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_21_1.png"></p>
+<p><img alt="png" src="/images/output_49_1.png"></p>
+<p>Here, we see that the majority of people killed are between the ages of 20 - 45 for all populations. </p>
+<p>Looking further at the ages for all races to see if there are any differences. </p>
 <div class="highlight"><pre><span></span><span class="c1">#based on the count of people killed by age, we come up with custom bins to analyze the victim age data further</span>
-<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
-<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0-10&#39;</span><span class="p">,</span> <span class="s1">&#39;10-15&#39;</span><span class="p">,</span> <span class="s1">&#39;15-20&#39;</span><span class="p">,</span> <span class="s1">&#39;20-25&#39;</span><span class="p">,</span> <span class="s1">&#39;25-30&#39;</span><span class="p">,</span> <span class="s1">&#39;30-35&#39;</span><span class="p">,</span> <span class="s1">&#39;35-40&#39;</span><span class="p">,</span> <span class="s1">&#39;40-45&#39;</span><span class="p">,</span> <span class="s1">&#39;45-50&#39;</span><span class="p">,</span> <span class="s1">&#39;50-55&#39;</span><span class="p">,</span> <span class="s1">&#39;55-60&#39;</span><span class="p">,</span> <span class="s1">&#39;60+&#39;</span><span class="p">]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;0-13&#39;</span><span class="p">,</span> <span class="s1">&#39;13-18&#39;</span><span class="p">,</span> <span class="s1">&#39;18-22&#39;</span><span class="p">,</span> <span class="s1">&#39;22-25&#39;</span><span class="p">,</span> <span class="s1">&#39;25-30&#39;</span><span class="p">,</span> <span class="s1">&#39;30-35&#39;</span><span class="p">,</span> <span class="s1">&#39;35-40&#39;</span><span class="p">,</span> <span class="s1">&#39;40-45&#39;</span><span class="p">,</span> <span class="s1">&#39;45-50&#39;</span><span class="p">,</span> <span class="s1">&#39;50-55&#39;</span><span class="p">,</span> <span class="s1">&#39;55-60&#39;</span><span class="p">,</span> <span class="s1">&#39;60+&#39;</span><span class="p">]</span>
 <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
-</pre></div>
 
-
-<div class="highlight"><pre><span></span><span class="c1">#visualizing the age of all people killed based on race</span>
+<span class="c1">#Plotting the age of all people killed based on race</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="p">(</span><span class="n">master_sheet_race</span>
  <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
@@ -445,14 +686,15 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_23_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based killings by time</span>
-<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
+<p><img alt="png" src="/images/output_51_2.png"></p>
+<h3>Indication of Racism?</h3>
+<p>Here, we can clearly see that the majority of black and hispanic people killed in police shootings are between the ages of 18 - 35, whereas, for white people, this age is between 25 - 45. This indicates a definitive prevalance of race based differentiation</p>
+<h5>Looking further into the shootings by age, but focusing on the number of people per million killed in that age group</h5>
+<div class="highlight"><pre><span></span><span class="c1">#creating time specific instances to visualize race based shootings by time</span>
+<span class="n">race_killings_per_mil</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span>
+                                                        <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
                         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span><span class="s1">&#39;incident_year&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per million who get killed per age group</span>
+<span class="c1">#Plotting the number of people per million who get killed per age group</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="p">(</span><span class="n">race_killings_per_mil</span><span class="p">[[</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
  <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;victim_age_range&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
@@ -474,20 +716,27 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_25_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#Looking at the location based data now</span>
+<p><img alt="png" src="/images/output_54_2.png"></p>
+<p>This is where the disparity really starts to show. Based on the graph, a black person between the ages of 22-25 is 7 times more likely to be killed in a police shooting as compared to a white person in the same age group. </p>
+<p>What is more disturbing is that a black person between the ages of 13-18 is 10 times more likely to get killed as compared to a similar aged white person. </p>
+<h3>Location Data</h3>
+<p>Looking at location based data to identify the deadliest states and cities. We also look to see if race plays an impact on certain cities. </p>
+<h5>Starting with Police shootings by state:</h5>
+<div class="highlight"><pre><span></span><span class="c1">#Plottings the number of police shootings by state</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by state&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police shootings, by state&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by state&#39;)</span>
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by state&#39;)</span>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_26_1.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#looking at city based data and identifying the deadliest cities </span>
+<p><img alt="png" src="/images/output_58_1.png"></p>
+<p>Here we can see that the states of CA, TX and FL seem to have the most number of shootings. </p>
+<h5>Looking further to a city level</h5>
+<div class="highlight"><pre><span></span><span class="c1">#looking at city based data and identifying the deadliest cities -- based on which cities have more than 25 victims</span>
 <span class="n">deadly_city_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
                         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">,</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
 
@@ -497,7 +746,7 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people per million who get killed per age group</span>
+<div class="highlight"><pre><span></span><span class="c1">#Plotting the number of people killed per city in our list of deadliest cities </span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="p">(</span><span class="n">deadly_city_info</span><span class="p">[[</span><span class="s1">&#39;city&#39;</span><span class="p">,</span> <span class="s1">&#39;city_victim_counts&#39;</span><span class="p">]]</span>
  <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;city&#39;</span><span class="p">])</span>
@@ -505,7 +754,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by city&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;shootings per year: by city&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -514,7 +763,8 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_28_1.png"></p>
+<p><img alt="png" src="/images/output_62_1.png"></p>
+<h5>Going further and seeing if we can get the race based count on a city level:</h5>
 <div class="highlight"><pre><span></span><span class="c1">#See if we can get the race based census data at city level</span>
 </pre></div>
 
@@ -528,7 +778,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over city groups&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per year: by race over city groups&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -542,15 +792,15 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_30_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#See if we can get the race based census data at city level and </span>
-<span class="c1">#integrate with this data to see proportion of race being killed</span>
-<span class="c1">#Also see if we can link the general crime rate </span>
-</pre></div>
-
-
+<p><img alt="png" src="/images/output_65_2.png"></p>
+<h4>Here, we look at the cities with the most disparate count of shootings and the ones that immediately stand out:</h4>
+<ol>
+<li>Chicago, Baltimore, St.Louis, Oklahoma &amp; Houston - places with clear disparity in majority black people being victims in police shootings. </li>
+<li>Los Angeles, San Antonio, Miami, Alberquerque  - places with clear disparity in majority hispanic people being victims in police shootings. </li>
+<li>Las Vegas, Austin, Tulsa - Only deadly cities where majority of poeple killed in police shootings were white</li>
+</ol>
+<h4>Doing a similar analysis on police departments responsible for shootings</h4>
 <div class="highlight"><pre><span></span><span class="c1">#Looking at the police department responsible for deaths and seeing if any police department stands out</span>
-<span class="c1">#looking at PD based data and identifying the deadliest PDs </span>
 <span class="n">deadly_police_depts</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
                         <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;death_agency&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
 
@@ -568,7 +818,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per year: by race over police department&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings by race over police department&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -582,7 +832,13 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_33_2.png"></p>
+<p><img alt="png" src="/images/output_69_2.png"></p>
+<p>The police departments that have a heavy impact of race are as follows: 
+1. Chicago PD, New York PD, Houston PD, St. Louis Metro PD, Oklahoma Pd : Higher ratio of black people killed as compared to other races 
+2. LA County Sherrif's Dept, LAPD, Phoenix PD : Higher ratio of hispanic people killed as compare to other races 
+3. Austin PD, Las Vegas Metro PD, U.S Marshals Service : Higher ratio of white people killed as compare to other races</p>
+<h3>Visualizing other fields</h3>
+<p>Looking at corelation of race against cause of death, alleged weapon, mental illness and geography</p>
 <div class="highlight"><pre><span></span><span class="c1">#Looking at the cause of death data now</span>
 <span class="n">cause_death</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;cause_of_death&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 <span class="c1">#plotting the most common ways of people getting killed</span>
@@ -590,15 +846,15 @@ Srujan Sharma's Blog            </a>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">cause_death</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">cause_death</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of deaths&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Cause of deaths&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by cause of death&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police shootings, by cause of death&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by cause of death&#39;)</span>
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by cause of death&#39;)</span>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_34_1.png"></p>
+<p><img alt="png" src="/images/output_72_1.png"></p>
 <div class="highlight"><pre><span></span><span class="c1">##Cleaning up alleged weapon data plotting distribution of alleged weapon amongst the victims</span>
 <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">alleged_weapon</span> <span class="o">==</span> <span class="s1">&#39;unknown weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
@@ -615,42 +871,15 @@ Srujan Sharma's Blog            </a>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">alleged_weapon</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">victim_count</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of deaths&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Alleged Weapon&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police killings, by alleged weapon&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police shootings, by alleged weapon&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police killings, by alleged weapon&#39;)</span>
+<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by alleged weapon&#39;)</span>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_36_1.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#Looking at the dealiest alleged weapons and visualizing distribution based on race</span>
-<span class="n">deadly_alleged_weapons</span><span class="o">=</span><span class="n">weapon</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
-<span class="n">temp_master</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">deadly_alleged_weapons</span><span class="p">[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">],</span> <span class="n">on</span> <span class="o">=</span> <span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="n">how</span> <span class="o">=</span> <span class="s1">&#39;inner&#39;</span><span class="p">)</span>
-
-<span class="c1">#plotting the number of deaths per million based on the alleged weapon</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="p">(</span><span class="n">temp_master</span><span class="p">[[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
- <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
- <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
- <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
- <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p><img alt="png" src="/images/output_37_2.png"></p>
+<p><img alt="png" src="/images/output_74_1.png"></p>
 <div class="highlight"><pre><span></span><span class="c1">#plotting the number of deaths per million based on the alleged weapon</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="p">(</span><span class="n">temp_master</span><span class="p">[[</span><span class="s1">&#39;alleged_weapon&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;death_per_mil&#39;</span><span class="p">]]</span>
@@ -659,7 +888,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per 1M people per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per 1M people per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -673,35 +902,7 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_38_2.png"></p>
-<div class="highlight"><pre><span></span><span class="c1">#looking at mental illness data to see if there is any distinction based on race</span>
-<span class="c1">#cleaning up mental illness data first </span>
-<span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;Unkown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
-<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">mental_illness</span> <span class="o">==</span> <span class="s1">&#39;unknown&#39;</span><span class="p">,</span> <span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unknown&quot;</span>
-<span class="c1">#plotting the number of deaths based on mental illness</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
-<span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span>
- <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">,</span> <span class="s1">&#39;victim_race&#39;</span><span class="p">])</span>
- <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
- <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
- <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
-<p><img alt="png" src="/images/output_39_2.png"></p>
+<p><img alt="png" src="/images/output_75_2.png"></p>
 <div class="highlight"><pre><span></span><span class="c1">#looking at mental illness data to see if there is any distinction based on race</span>
 <span class="c1">#cleaning up mental illness data first </span>
 <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;mental_illness&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -715,7 +916,7 @@ Srujan Sharma's Blog            </a>
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Killings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -729,12 +930,8 @@ Srujan Sharma's Blog            </a>
 </pre></div>
 
 
-<p><img alt="png" src="/images/output_40_2.png"></p>
-<div class="highlight"><pre><span></span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;body_cam&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;No&quot;</span>
-<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;Surveillance Video&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span>
-<span class="n">master_sheet_race</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">body_cam</span> <span class="o">==</span> <span class="s1">&#39;Bystander Video&#39;</span><span class="p">,</span> <span class="s1">&#39;body_cam&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Yes&quot;</span>
-<span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<p><img alt="png" src="/images/output_76_2.png"></p>
+<div class="highlight"><pre><span></span><span class="n">master_sheet_race</span><span class="p">[[</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">,</span><span class="s1">&#39;victim_count&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;geography&#39;</span><span class="p">,</span><span class="s1">&#39;victim_race&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
 </pre></div>
 
 
@@ -797,6 +994,13 @@ Srujan Sharma's Blog            </a>
   </tbody>
 </table>
 </div>
+
+<h2>Part 1: Conclusion</h2>
+<p>In the first part of our BLM project, we were able to visualize all of the data that we had gathered regarding the police shootings. We can see that there is a significant amount of visible bias being given to the race when it comes to police shootings with black people being significantly more likely to be killed in a police shooting as compared to white people. </p>
+<h2>Part 2: Sneak Peak</h2>
+<p>In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings</p>
+<div class="highlight"><pre><span></span>
+</pre></div>
             </div>
             <!-- /.entry-content -->
     <hr/>
@@ -811,7 +1015,7 @@ Srujan Sharma's Blog            </a>
             var disqus_config = function () {
                 this.language = "en";
 
-                        this.page.identifier = '2020-06-19-BLM-shootings-data';
+                        this.page.identifier = '2020-06-19-BLM-project-part-1';
             };
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
