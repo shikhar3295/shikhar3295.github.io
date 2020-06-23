@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="/theme/css/bootstrap.flatly.min.css" type="text/css"/>
     <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="/theme/css/pygments/colorful.css" rel="stylesheet">
+    <link href="/theme/css/pygments/native.css" rel="stylesheet">
     <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
         <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
@@ -478,10 +478,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Top 15 Name or Surname of killed people&#39;)</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_25_1.png"></p>
 <p>Here we can see the most common names are Michael &amp; James -- with over 500 people with these 2 names being killed. </p>
 <h3>Victim Race</h3>
@@ -520,10 +516,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Total number of people killed, by race&#39;)</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_32_1.png"></p>
 <p>This graph shows us a partial picture, as the number of white people killed to be seems a lot higher than black and hispanic people. We then include the overall population of each race and compare the number of people killed per million people of the race. </p>
 <h5>We will be using this method going forward for our other analysis as well.</h5>
@@ -547,10 +539,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed as a proportion of their respective race per million&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">race_based_counts</span><span class="o">.</span><span class="n">victim_race</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">race_based_counts</span><span class="o">.</span><span class="n">death_per_mil</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="err">&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f934de7d310&gt;</span>
 </pre></div>
 
 
@@ -580,15 +568,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1440</span><span class="n">x720</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_40_2.png"></p>
 <p>This graph shows what was earlier visualized in the overall chart, that there is definitely focus on the race of a person. Here, we can see that we have atleast 7 black people per million being killed in police shootings per year.</p>
 <h3>Checking for seasonality</h3>
@@ -607,15 +586,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">36000</span><span class="n">x21600</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_44_2.png"></p>
 <p>While we see some dips in the data, there is no indication of seasonality based on the number of people killed per month. We will now look at the same kind of graph to visualize death per million</p>
 <div class="highlight"><pre><span></span><span class="c1">#plotting the vicitms per 1M population per month over time</span>
@@ -631,15 +601,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">36000</span><span class="n">x21600</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_46_2.png"></p>
 <p>Here, we observe a slight dip in the percentage of people being killed around the end/start of the year -- especially for black people. This is an interesting observation and we will note it down to see if there is any more data around this and if this can be explored further. </p>
 <h2>Victim Age</h2>
@@ -649,10 +610,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="n">age_dist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">master_sheet_race</span><span class="p">[</span><span class="s1">&#39;victim_age&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
 <span class="n">age_dist</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;People killed in police shootings: Age distribution&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;People killed in police shootings: Age distribution&#39;)</span>
 </pre></div>
 
 
@@ -677,15 +634,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_51_2.png"></p>
 <h3>Indication of Racism?</h3>
 <p>Here, we can clearly see that the majority of black and hispanic people killed in police shootings are between the ages of 18 - 35, whereas, for white people, this age is between 25 - 45. This indicates a definitive prevalance of race based differentiation</p>
@@ -707,15 +655,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_54_2.png"></p>
 <p>This is where the disparity really starts to show. Based on the graph, a black person between the ages of 22-25 is 7 times more likely to be killed in a police shooting as compared to a white person in the same age group. </p>
 <p>What is more disturbing is that a black person between the ages of 13-18 is 10 times more likely to get killed as compared to a similar aged white person. </p>
@@ -726,10 +665,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">master_sheet_race</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police shootings, by state&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by state&#39;)</span>
 </pre></div>
 
 
@@ -759,10 +694,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">&lt;function matplotlib.pyplot.show(*args, **kw)&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_62_1.png"></p>
 <h5>Going further and seeing if we can get the race based count on a city level:</h5>
 <div class="highlight"><pre><span></span><span class="c1">#See if we can get the race based census data at city level</span>
@@ -780,15 +711,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per year: by race over city groups&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -823,15 +745,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_69_2.png"></p>
 <p>The police departments that have a heavy impact of race are as follows: 
 1. Chicago PD, New York PD, Houston PD, St. Louis Metro PD, Oklahoma Pd : Higher ratio of black people killed as compared to other races 
@@ -847,10 +760,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of deaths&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Cause of deaths&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Number of police shootings, by cause of death&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by cause of death&#39;)</span>
 </pre></div>
 
 
@@ -875,10 +784,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 </pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="err">Text(0.5, 1.0, &#39;Number of police shootings, by alleged weapon&#39;)</span>
-</pre></div>
-
-
 <p><img alt="png" src="/images/output_74_1.png"></p>
 <div class="highlight"><pre><span></span><span class="c1">#plotting the number of deaths per million based on the alleged weapon</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
@@ -890,15 +795,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per 1M people per year: by race over alleged weapons&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 
 
@@ -918,15 +814,6 @@ columns with the most amount of null entries and see if we can clean up some fie
 <span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
-</pre></div>
-
-
-<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="k">function</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span><span class="p">.</span><span class="k">show</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span><span class="o">&gt;</span>
-
-
-
-
-<span class="o">&lt;</span><span class="n">Figure</span> <span class="k">size</span> <span class="mi">1008</span><span class="n">x432</span> <span class="k">with</span> <span class="mi">0</span> <span class="n">Axes</span><span class="o">&gt;</span>
 </pre></div>
 
 
