@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Srujan Sharma's Blog - Black Lives Matter</title><link href="/" rel="alternate"></link><link href="/feeds/black-lives-matter.atom.xml" rel="self"></link><id>/</id><updated>2020-06-19T09:00:00-07:00</updated><entry><title>Black Lives Matter Project - Part 1 - Data Exploration &amp; Visualization</title><link href="/blog/2020/06/BLM-project-part-1/" rel="alternate"></link><published>2020-06-19T09:00:00-07:00</published><updated>2020-06-19T09:00:00-07:00</updated><author><name>Srujan Sharma</name></author><id>tag:None,2020-06-19:/blog/2020/06/BLM-project-part-1/</id><summary type="html">&lt;p&gt;We have data on all deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in the shootings and combining other sources of data to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;We have data on all deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in the shootings and combining other sources of data to this analysis. &lt;/p&gt;
 &lt;h2&gt;Initialization&lt;/h2&gt;
 &lt;p&gt;First of all, we import the libraries we will use, configure some
-settings, and load the dataset.&lt;/p&gt;
+settings, and load the dataset. &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#Defining libraries&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
@@ -22,6 +22,7 @@ settings, and load the dataset.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;p&gt;Loading the data from https://mappingpoliceviolence.org/ &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#Getting police shootings data from https://mappingpoliceviolence.org/&lt;/span&gt;
 &lt;span class="n"&gt;mpv_police_dataset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_excel&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;MPVDatasetDownload.xlsx&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -700,7 +701,7 @@ columns with the most amount of null entries and see if we can clean up some fie
  &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unstack&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
  &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bar&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Shootings per year: by race over mental illness&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fontsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;title&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Shootings per 1M people per year: by race over mental illness&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fontsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -770,9 +771,11 @@ columns with the most amount of null entries and see if we can clean up some fie
 &lt;/table&gt;
 &lt;/div&gt;
 
+&lt;p&gt;Continuing along the trend we have observed so far, there seems to be a prevalant bias when looking at figures per million people. &lt;/p&gt;
+&lt;p&gt;We also observe that disparity is more in urban areas, with a majority of shootings involving black people. &lt;/p&gt;
 &lt;h2&gt;Part 1: Conclusion&lt;/h2&gt;
-&lt;p&gt;In the first part of our BLM project, we were able to visualize all of the data that we had gathered regarding the police shootings. We can see that there is a significant amount of visible bias being given to the race when it comes to police shootings with black people being significantly more likely to be killed in a police shooting as compared to white people. &lt;/p&gt;
+&lt;p&gt;In the first part of our BLM project, we were able to visualize all the data that we had gathered regarding the police shootings. We can see that there is a significant amount of visible bias being given to the race when it comes to police shootings with black &amp;amp; hispanic people being significantly more likely to be killed in a police shooting as compared to white people. &lt;/p&gt;
 &lt;h2&gt;Part 2: Sneak Peak&lt;/h2&gt;
-&lt;p&gt;In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings&lt;/p&gt;
+&lt;p&gt;In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings. Stay Tuned!&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</content><category term="Black Lives Matter"></category><category term="python"></category><category term="BLM"></category><category term="police shootings"></category><category term="Data Science"></category><category term="Analysis"></category><category term="Visualization"></category></entry></feed>

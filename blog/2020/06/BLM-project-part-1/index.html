@@ -125,7 +125,7 @@ Srujan Sharma's Blog            </a>
                 <p>We have data on all deadly police shootings between 2013 and 2019. The goal is to analyze the data and derive any trends that could be indicative of systemic racism. We will be looking at what factors played a part in the shootings and combining other sources of data to this analysis. </p>
 <h2>Initialization</h2>
 <p>First of all, we import the libraries we will use, configure some
-settings, and load the dataset.</p>
+settings, and load the dataset. </p>
 <div class="highlight"><pre><span></span><span class="c1">#Defining libraries</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -145,6 +145,7 @@ settings, and load the dataset.</p>
 </pre></div>
 
 
+<p>Loading the data from https://mappingpoliceviolence.org/ </p>
 <div class="highlight"><pre><span></span><span class="c1">#Getting police shootings data from https://mappingpoliceviolence.org/</span>
 <span class="n">mpv_police_dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s1">&#39;MPVDatasetDownload.xlsx&#39;</span><span class="p">)</span>
 </pre></div>
@@ -823,7 +824,7 @@ columns with the most amount of null entries and see if we can clean up some fie
  <span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
  <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
 <span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Shootings per 1M people per year: by race over mental illness&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span>
 </pre></div>
 
@@ -893,10 +894,12 @@ columns with the most amount of null entries and see if we can clean up some fie
 </table>
 </div>
 
+<p>Continuing along the trend we have observed so far, there seems to be a prevalant bias when looking at figures per million people. </p>
+<p>We also observe that disparity is more in urban areas, with a majority of shootings involving black people. </p>
 <h2>Part 1: Conclusion</h2>
-<p>In the first part of our BLM project, we were able to visualize all of the data that we had gathered regarding the police shootings. We can see that there is a significant amount of visible bias being given to the race when it comes to police shootings with black people being significantly more likely to be killed in a police shooting as compared to white people. </p>
+<p>In the first part of our BLM project, we were able to visualize all the data that we had gathered regarding the police shootings. We can see that there is a significant amount of visible bias being given to the race when it comes to police shootings with black &amp; hispanic people being significantly more likely to be killed in a police shooting as compared to white people. </p>
 <h2>Part 2: Sneak Peak</h2>
-<p>In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings</p>
+<p>In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings. Stay Tuned!</p>
 <div class="highlight"><pre><span></span>
 </pre></div>
             </div>
