@@ -779,15 +779,17 @@ columns with the most amount of null entries and see if we can clean up some fie
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;</content><category term="Black Lives Matter"></category><category term="python"></category><category term="BLM"></category><category term="police shootings"></category><category term="Data Science"></category></entry><entry><title>Business Process Analysis for a civil engineering company</title><link href="/blog/2020/06/BPA-Project-Civil-eng-company/" rel="alternate"></link><published>2020-06-19T09:00:00-07:00</published><updated>2020-06-19T09:00:00-07:00</updated><author><name>Srujan Sharma</name></author><id>tag:None,2020-06-19:/blog/2020/06/BPA-Project-Civil-eng-company/</id><summary type="html">&lt;p&gt;I led a team to analyze the existing operations for a large civil engineering firm and suggest a system overhall while redesigning their business process. &lt;/p&gt;
 &lt;p&gt;This was a proof of concept project that we did in conjuntion with JN Bentley UK. We used the following steps to do our analysis …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I led a team to analyze the existing operations for a large civil engineering firm and suggest a system overhall while redesigning their business process. &lt;/p&gt;
-&lt;p&gt;This was a proof of concept project that we did in conjuntion with JN Bentley UK. We used the following steps to do our analysis:
-1. Conducted survey of existing client operations 
-2. Identified key areas for process improvements
-3. Defined project scope and set up key milestones 
-4. Created thorough data flow diagrams to visualize client processes at various levels of depth
-5. Finalized all areas needing improvements 
-6. Came up with a detailed design of the new system, including the database architecture
-7. Evaluated multiple ERP Systems as replacements and analyzed the feasibility of each system
-8. Gave a ranking to each solution based on key factors defined by client
-9. Finalized a system for adoption and presented client an implementation plan to integrate system within their platform. &lt;/p&gt;
+&lt;p&gt;This was a proof of concept project that we did in conjuntion with JN Bentley UK. We used the following steps to do our analysis:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Conducted survey of existing client operations &lt;/li&gt;
+&lt;li&gt;Identified key areas for process improvements&lt;/li&gt;
+&lt;li&gt;Defined project scope and set up key milestones &lt;/li&gt;
+&lt;li&gt;Created thorough data flow diagrams to visualize client processes at various levels of depth&lt;/li&gt;
+&lt;li&gt;Finalized all areas needing improvements &lt;/li&gt;
+&lt;li&gt;Came up with a detailed design of the new system, including the database architecture&lt;/li&gt;
+&lt;li&gt;Evaluated multiple ERP Systems as replacements and analyzed the feasibility of each system&lt;/li&gt;
+&lt;li&gt;Gave a ranking to each solution based on key factors defined by client&lt;/li&gt;
+&lt;li&gt;Finalized a system for adoption and presented client an implementation plan to integrate system within their platform. &lt;/li&gt;
+&lt;/ol&gt;
 &lt;p&gt;Find the report here: 
 &lt;a href="/pdf/JN_Bentley_UK_report_BPA.pdf"&gt;BPA_Analysis_Report&lt;/a&gt;&lt;/p&gt;</content><category term="Past Projects"></category><category term="Business Process Analysis"></category><category term="Microsoft Visio"></category><category term="Project planning"></category><category term="Data Flow"></category></entry></feed>
