@@ -366,7 +366,7 @@ columns with the most amount of null entries and see if we can clean up some fie
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="/images/output_25_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Top 15 Name or Surname of killed people" src="/images/output_25_1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Here we can see the most common names are Michael &amp;amp; James -- with over 500 people with these 2 names being killed. &lt;/p&gt;
 &lt;h3&gt;Victim Race&lt;/h3&gt;
 &lt;p&gt;Looking at the victim race data &lt;/p&gt;
@@ -545,7 +545,7 @@ columns with the most amount of null entries and see if we can clean up some fie
 
 &lt;p&gt;&lt;img alt="png" src="/images/output_54_2.png"&gt;&lt;/p&gt;
 &lt;p&gt;This is where the disparity really starts to show. Based on the graph, a black person between the ages of 22-25 is 7 times more likely to be killed in a police shooting as compared to a white person in the same age group. &lt;/p&gt;
-&lt;p&gt;What is more disturbing is that a black person between the ages of 13-18 is 10 times more likely to get killed as compared to a similar aged white person. &lt;/p&gt;
+&lt;p&gt;We also see that a black person between the ages of 13-18 is 10 times more likely to get killed as compared to a similar aged white person. &lt;/p&gt;
 &lt;h3&gt;Location Data&lt;/h3&gt;
 &lt;p&gt;Looking at location based data to identify the deadliest states and cities. We also look to see if race plays an impact on certain cities. &lt;/p&gt;
 &lt;h5&gt;Starting with Police shootings by state:&lt;/h5&gt;
@@ -634,10 +634,12 @@ columns with the most amount of null entries and see if we can clean up some fie
 
 
 &lt;p&gt;&lt;img alt="png" src="/images/output_69_2.png"&gt;&lt;/p&gt;
-&lt;p&gt;The police departments that have a heavy impact of race are as follows: 
-1. Chicago PD, New York PD, Houston PD, St. Louis Metro PD, Oklahoma Pd : Higher ratio of black people killed as compared to other races 
-2. LA County Sherrif's Dept, LAPD, Phoenix PD : Higher ratio of hispanic people killed as compare to other races 
-3. Austin PD, Las Vegas Metro PD, U.S Marshals Service : Higher ratio of white people killed as compare to other races&lt;/p&gt;
+&lt;p&gt;The police departments that have a heavy impact of race are as follows: &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Chicago PD, New York PD, Houston PD, St. Louis Metro PD, Oklahoma Pd : Higher ratio of black people killed as compared to other races &lt;/li&gt;
+&lt;li&gt;LA County Sherrif's Dept, LAPD, Phoenix PD : Higher ratio of hispanic people killed as compare to other races &lt;/li&gt;
+&lt;li&gt;Austin PD, Las Vegas Metro PD, U.S Marshals Service : Higher ratio of white people killed as compare to other races&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h3&gt;Visualizing other fields&lt;/h3&gt;
 &lt;p&gt;Looking at corelation of race against cause of death, alleged weapon, mental illness and geography&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;#Looking at the cause of death data now&lt;/span&gt;
@@ -775,4 +777,16 @@ columns with the most amount of null entries and see if we can clean up some fie
 &lt;h2&gt;Part 2: Sneak Peak&lt;/h2&gt;
 &lt;p&gt;In part 2 of our BLM Project, we would be getting data from different sources and looking at correlation between things like the median household income, the race based count for each city, while also looking at the population of people over different cities so we could get per capita killings&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</content><category term="blogging"></category><category term="python"></category><category term="BLM"></category><category term="police shootings"></category><category term="Data Science"></category></entry></feed>
+&lt;/pre&gt;&lt;/div&gt;</content><category term="blogging"></category><category term="python"></category><category term="BLM"></category><category term="police shootings"></category><category term="Data Science"></category></entry><entry><title>Business Process Analysis for a civil engineering company</title><link href="/BPA-Project-Civil-eng-company.html" rel="alternate"></link><published>2020-06-19T09:00:00-07:00</published><updated>2020-06-19T09:00:00-07:00</updated><author><name>Srujan Sharma</name></author><id>tag:None,2020-06-19:/BPA-Project-Civil-eng-company.html</id><summary type="html">&lt;p&gt;I led a team to analyze the existing operations for a large civil engineering firm and suggest a system overhall while redesigning their business process. &lt;/p&gt;
+&lt;p&gt;This was a proof of concept project that we did in conjuntion with JN Bentley UK. We used the following steps to do our analysis …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I led a team to analyze the existing operations for a large civil engineering firm and suggest a system overhall while redesigning their business process. &lt;/p&gt;
+&lt;p&gt;This was a proof of concept project that we did in conjuntion with JN Bentley UK. We used the following steps to do our analysis:
+1. Conducted survey of existing client operations 
+2. Identified key areas for process improvements
+3. Defined project scope and set up key milestones 
+4. Created thorough data flow diagrams to visualize client processes at various levels of depth
+5. Finalized all areas needing improvements 
+6. Came up with a detailed design of the new system, including the database architecture
+7. Evaluated multiple ERP Systems as replacements and analyzed the feasibility of each system
+8. Gave a ranking to each solution based on key factors defined by client
+9. Finalized a system for adoption and presented client an implementation plan to integrate system within their platform. &lt;/p&gt;
+&lt;p&gt;&lt;a href="/pdf/JN_Bentley_UK_report_BPA.pdf"&gt;BPA_Analysis_Report&lt;/a&gt;&lt;/p&gt;</content><category term="blogging"></category><category term="Business Process Analysis"></category><category term="Microsoft Visio"></category><category term="Project planning"></category><category term="Data Flow"></category></entry></feed>
